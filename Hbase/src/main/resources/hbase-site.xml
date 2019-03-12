@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
+<configuration>
+
+	<property>
+		<name>hbase.cluster.distributed</name>
+		<value>true</value>
+		<description>使用完全分布式</description>
+	</property>
+
+	<property>
+		<name>hbase.rootdir</name>
+		<value>hdfs://lanpengcluster/hbase</value>
+		<description>指定hbase数据在hdfs上的存放路径</description>
+	</property>
+
+	<property>
+		<name>hbase.zookeeper.quorum</name>
+		<value>ip201:2181,ip202:2181,ip203:2181</value>
+		<description>配置zk地址</description>
+	</property>
+
+	<property>
+		<name>hbase.zookeeper.property.dataDir</name>
+		<value>/home/lanp/lanpBigData/zookeeper/data</value>
+		<description>zk的本地目录</description>
+	</property>
+
+	<property>
+		<name>hbase.client.write.buffer</name>
+		<value>4194304</value>
+		<description>HBase客户端缓存，增大该值可以减少RPC调用次数</description>
+	</property>
+
+	<property>
+		<name>zookeeper.session.timeout</name>
+		<value>25000</value>
+		<description>Zookeeper会话超时时间</description>
+	</property>
+
+	<property>
+		<name>hbase.coprocessor.region.classes</name>
+		<value>lxpsee.top.coprossor.CallLogRegionObserver</value>
+		<description>自定义观察者</description>
+	</property>
+
+</configuration>
+

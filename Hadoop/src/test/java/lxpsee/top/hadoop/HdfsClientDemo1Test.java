@@ -158,5 +158,23 @@ public class HdfsClientDemo1Test {
         }
     }
 
+    @Test
+    public void testDataConsistency() {
+        try {
+            FSDataOutputStream fsDataOutputStream = fileSystem.create(new Path("/user/lanp/test/hello.txt"));
+            fsDataOutputStream.write("hello".getBytes());
+//            fsDataOutputStream.flush();
+            fsDataOutputStream.hflush();
+
+            fsDataOutputStream.write("world".getBytes());
+            fsDataOutputStream.hsync();
+            fsDataOutputStream.close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
 
 }

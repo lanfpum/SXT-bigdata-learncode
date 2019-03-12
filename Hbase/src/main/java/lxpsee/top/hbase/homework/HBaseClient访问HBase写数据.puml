@@ -1,0 +1,43 @@
+@startuml
+autonumber
+HbaseClient -[#orange]> Zookeeper: Client先去访问zookeeper
+Zookeeper -[#0000FF]> HbaseClient: zk返回meta表所在的位置信息
+note right
+    先访问zookeeper，找到Meta表，
+    并获取Meta表元数据
+    确定当前将要写入的数据所对应的
+    HRegion和HRegionServer服务器
+end note
+|||
+
+box "RegionServer" #LightBlue
+	participant HLog
+	participant Memstore
+end box
+note over HLog, Memstore
+	都是在RegionServer
+end note
+|||
+HbaseClient --[#red]> HLog:先把数据写入到HLog，以防止数据丢失
+|||
+HLog --[#red]> Memstore:再把数据写入到Memstore
+note left of Memstore #aqua
+	如果HLog和Memstore均写入成功，
+    则这条数据写入成功
+end note
+rnote over Memstore
+       默认大小64m，阈值40%
+end rnote
+|||
+box "DataNode" #LightGreen
+	participant HFile
+end box
+Memstore  --[#red]> HFile:达到阈值,把数据flush到Storefile中
+note right
+    当Storefile越来越多，会触发Compact合并操作，
+    把过多的Storefile合并成一个大的Storefile。
+
+    当Storefile越来越大，Region也会越来越大，
+    达到阈值后，会触发Split操作，将Region一分为二。
+end note
+@enduml

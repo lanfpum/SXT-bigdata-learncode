@@ -1,0 +1,30 @@
+@startuml
+autonumber
+
+user --[#red]> weibo_content: 添加记录
+note right 
+    RowKey:用户ID_时间戳
+    ColumnFamily:info
+    ColumnLabel:标题,内容,图片URL
+    Version:1个版本
+end note
+
+user --[#red]> weibo_relations:通过ID查询粉丝列表（list）
+note right 
+    RowKey:用户ID
+    ColumnFamily:attends,fans
+    ColumnLabel:关注用户ID，粉丝用户ID
+    ColumnValue:用户ID
+    Version：1个版本
+end note
+weibo_relations --[#0000FF]> user:返回粉丝ID列表
+
+user --[#red]> receive_content_email:给每一个粉丝添加新发布微博的rowkey
+note right
+    RowKey:用户ID
+    ColumnFamily:info
+    ColumnLabel:用户ID-发布微博的人的用户ID
+    ColumnValue:关注的人的微博的RowKey
+    Version:1000
+end note
+@enduml

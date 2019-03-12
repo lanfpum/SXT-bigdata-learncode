@@ -3,22 +3,34 @@
 <configuration>
     <property>
         <name>dfs.replication</name>
-        <value>3</value>
+        <value>2</value>
         <description>复本数量</description>
     </property>
 
     <property>
         <name>dfs.blocksize</name>
-        <value>128m</value>
+        <value>64m</value>
         <description>HDFS 文件块大小</description>
     </property>
 
-    <property>>
+    <property>
         <name>dfs.namenode.name.dir</name>
         <value>
             file:///home/lanp/lanpBigData/hadoop/dfs/name1,
             file:///home/lanp/lanpBigData/hadoop/dfs/name2
         </value>
+    </property>
+	
+	 <property>
+        <name>dfs.namenode.handler.count</name>
+        <value>50</value>
+        <description>NameNode服务默认线程数，的默认值是10</description>
+    </property>
+
+    <property>
+        <name>dfs.namenode.name.dir.restore</name>
+        <value>true</value>
+        <description>设置为true以使NameNode能够尝试恢复以前失败的dfs.namenode.name.dir</description>
     </property>
 
     <property>

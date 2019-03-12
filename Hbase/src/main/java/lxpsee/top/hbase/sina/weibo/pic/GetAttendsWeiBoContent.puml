@@ -1,0 +1,6 @@
+@startuml
+autonumber
+user -[#red]> receive_content_email: 获取所关注的用户的微博RowKey
+receive_content_email -[#0000FF]> weibo_content: 根据获取的RowKey，得到微博内容
+weibo_content -[#red]> user:返回微博内容
+@enduml

@@ -1,0 +1,28 @@
+@startuml
+autonumber
+HbaseClient -[#red]> Zookeeper: Client先去访问zookeeper
+Zookeeper -[#0000FF]> HbaseClient: zk返回meta表所在的位置信息
+note left
+	即找到这个meta表在哪个HRegionServer上保存着
+	返回RegionServer的元数据信息
+end note
+|||
+HbaseClient -[#orange]> RegionServer:请求Region的元数据信息
+RegionServer -[#0000FF]> HbaseClient:返回region的元数据信息
+note left
+	Client通过刚才获取到的HRegionServer的IP
+	来访问Meta表所在的HRegionServer，从而读
+	取到Meta，进而获取到Meta表中存放的元数据
+end note
+|||
+|||
+HbaseClient -[#orange]> RegionServer:访问具体存放在RegionServer中的Region信息
+note left
+	Client通过元数据中存储的信息，访问
+	对应的HRegionServer，然后扫描所在
+	HRegionServer的Memstore和
+	Storefile来查询数据
+end note
+|||
+RegionServer -[#0000FF]> HbaseClient:响应回查询到的数据
+@enduml

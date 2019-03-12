@@ -1,0 +1,20 @@
+@startuml
+(hive 数据表) as hive
+(hbase 数据表) as hbase
+(hive 临时表) as hivetemp
+note "hdfs（本地）中待导入数据" as N
+
+
+用户 --> hive:在hive中创建表
+hive -> hbase:关联创建hbase中的表格
+
+用户 . N
+N . hivetemp:load文件中的数据
+note right
+    临时表用来加载数据
+    注：不能将数据直接load进
+    Hive所关联HBase的那张表中
+end note
+
+hivetemp --> hive:insert数据
+@enduml

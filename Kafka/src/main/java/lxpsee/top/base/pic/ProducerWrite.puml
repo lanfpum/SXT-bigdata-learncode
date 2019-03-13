@@ -1,0 +1,42 @@
+@startuml
+
+title __kafka producer 的写入过程__
+
+autonumber
+producer -[#red]> zk
+activate zk
+zk --[#0000FF]> producer
+deactivate zk
+note left
+    从"/broker/../state"节点
+    下找到该partition的leader
+end note
+
+box "kafka cluter" #LightBlue
+	participant leader
+	participant followers
+end box
+
+producer -[#red]> leader:发送消息
+activate leader
+leader -[#red]> leader:将消息写入本地log
+
+leader -[#red]> followers:从leader pull消息
+activate followers
+
+followers -[#red]> followers:写入本地log
+
+followers --[#0000FF]> leader:向leader发送ack
+deactivate followers
+
+leader  --[#0000FF]> producer
+deactivate leader
+note left
+    leader收到所有ISR中的
+    replication的ACK后，
+    增加HW（high watermark，
+    最后commit 的offset）
+    并向producer发送ACK
+end note
+
+@enduml

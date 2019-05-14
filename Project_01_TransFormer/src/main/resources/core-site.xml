@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
+<configuration>
+    <property>
+        <name>hadoop.tmp.dir</name>
+        <value>/home/lanp/lanpBigData/hadoop/temp</value>
+        <description>临时文件路径</description>
+    </property>
+
+    <!--<property>
+        <name>topology.node.switch.mapping.impl</name>
+        <value>lxpsee.top.rackaware.MyRackAware</value>
+        <description>自定义机架感知配置类</description>
+    </property>-->
+
+    <property>
+        <name>fs.defaultFS</name>
+        <value>hdfs://lanpengcluster</value>
+        <description>配置hdfs文件系统名称服务</description>
+    </property>
+
+    <property>
+        <name>ha.zookeeper.quorum</name>
+        <value>ip201:2181,ip202:2181,ip203:2181</value>
+        <description>配置zk服务器</description>
+    </property>
+
+
+    <property>
+        <name>hadoop.proxyuser.httpfs.hosts</name>
+        <value>*</value>
+        <description>hue https代理用户</description>
+    </property>
+
+    <property>
+        <name>hadoop.proxyuser.httpfs.groups</name>
+        <value>*</value>
+        <description>hue https 代理的用户组</description>
+    </property>
+
+    <property>
+        <name>hadoop.proxyuser.lanp.hosts</name>
+        <value>*</value>
+    </property>
+
+    <property>
+        <name>hadoop.proxyuser.lanp.groups</name>
+        <value>*</value>
+    </property>
+
+    <property>
+        <name>hadoop.proxyuser.hue.hosts</name>
+        <value>*</value>
+    </property>
+
+    <property>
+        <name>hadoop.proxyuser.hue.groups</name>
+        <value>*</value>
+    </property>
+
+</configuration>
+

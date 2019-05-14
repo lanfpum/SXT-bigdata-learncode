@@ -1,0 +1,109 @@
+@startuml
+title sparkContext的源码解读
+'skinparam packageStyle rect
+skinparam backgroundColor #EEEBDC
+skinparam roundcorner 20
+skinparam sequenceArrowThickness 2
+'skinparam handwritten true
+
+class SparkContext {
+    __ 通过两个函数获取到配置文件中的属性 __
+    #def master: String
+    #def deployMode: String
+
+    __ 创建TaskScheduler __
+    -val (sched, ts) = SparkContext.createTaskScheduler(sc: SparkContext,
+    master: String,deployMode: String): (SchedulerBackend, TaskScheduler) {
+    #val scheduler = new TaskSchedulerImpl(sc)
+    #val backend = new StandaloneSchedulerBackend(scheduler,
+    sc, masterUrls)
+    .. 调用TaskSchedulerImpl的init(),创建调度池 ..
+    scheduler.initialize(backend) }
+    -- 到此完成了TaskScheduler的初始化 --
+
+    _dagScheduler = new DAGScheduler(this)
+    _heartbeatReceiver.ask[Boolean](TaskSchedulerIsSet)
+
+    .. 调用TaskSchedulerImpl的start() ..
+    _taskScheduler.start()
+}
+
+-class TaskSchedulerImpl  {
+    #val sc: SparkContext,
+    #val maxTaskFailures: Int,
+    #isLocal: Boolean = false
+
+    #override def start() {backend.start()}
+}
+
+-class SparkDeploySchedulerBackend {
+     #override def start() {
+     launcherBackend.connect()
+     .. 参数的配置 ..
+     val appDesc = new ApplicationDescription(sc.appName, maxCores, sc.executorMemory,
+           command, appUIAddress, sc.eventLogDir, sc.eventLogCodec, coresPerExecutor)
+     ..  ..
+     new AppClient().start()}
+
+}
+
+-class AppClient {
+    -class ClientEndpoint{
+        override def onStart(): Unit = {registerWithMaster(1)}
+
+    #def start() {
+    endpoint.set(rpcEnv.setupEndpoint("AppClient", new ClientEndpoint(rpcEnv)))}
+}
+
+-class StandaloneSchedulerBackend {
+}
+
+
+TaskSchedulerImpl <. SparkContext:依赖
+
+SparkContext <. TaskSchedulerImpl:依赖
+
+SparkDeploySchedulerBackend .|> StandaloneSchedulerBackend:实现
+TaskSchedulerImpl <.. SparkDeploySchedulerBackend:依赖
+SparkContext <.. SparkDeploySchedulerBackend:依赖
+SparkDeploySchedulerBackend ..> AppClient:依赖
+
+note left of TaskSchedulerImpl
+    TaskSchedukerImpl定义的翻译：
+    1.底层通过操作一个SchedulerBackend,针对不同种类的cluster(standalone/yarn/mesos),调度task
+    2.它也可以通过使用一个LocalBackend，并且设置isLocal为true，来在本地模式下工作
+    3.它负责处理一些通用逻辑，比如说决定多个 job的调度顺序，启动推测任务执行
+    4.客户端首先应该调它的initialize()和start()，然后通过runTasks()方法提交task sets
+end note
+
+note left of SparkDeploySchedulerBackend
+    这个ApplicationDescription非常重要，后面我们剖析master的时候还会需要
+    它就代表了当前执行的这个appplication的一些情况，比如：
+    包含了application最大需要的cpu core，每个slave上需要多少内存
+end note
+
+note left of AppClient
+    这是一个接口
+    它负责为application与spark集群通信
+    它会接收一个spark master的url，以及一个ApplicationDescription、一个集群事件的监听器、
+    以及各种事件发生时监听器的回调函数
+end note
+
+
+@enduml
+
+/'矩形的上层表示类名、中层表示属性、下层表示方法'/
+
+/'-表示权限private'/
+/'#表示权限protected'/
+/'+表示权限public'/
+
+/'ClassA <-- ClassB:关联
+  ClassA <.. ClassB : 依赖
+  ClassA o-- ClassB:聚集
+  ClassA <|-- ClassB:泛化
+  ClassA <|.. ClassB:实现'/
+
+.. 注解说明 ..
+__ 注解说明 __
+-- 注解说明 --

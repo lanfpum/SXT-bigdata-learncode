@@ -29,6 +29,7 @@
             <artifactId>kafka-streams</artifactId>
             <version>0.10.0.1</version>
         </dependency>
+
     </dependencies>
 
 </project>

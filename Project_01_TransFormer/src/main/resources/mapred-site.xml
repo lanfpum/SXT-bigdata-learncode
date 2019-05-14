@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+<?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
+
+<configuration>
+
+    <property>
+        <name>mapreduce.framework.name</name>
+        <value>yarn</value>
+        <description>指定mr运行在yarn上</description>
+    </property>
+
+    <property>
+        <name>mapreduce.jobhistory.adress</name>
+        <value>ip201:10020</value>
+    </property>
+
+    <property>
+        <name>mapreduce.jobhistory.webapp.adress</name>
+        <value>ip201:19888</value>
+    </property>
+
+    <property>
+        <name>mapreduce.jobtracker.handler.count</name>
+        <value>50</value>
+        <description>Job任务线程数</description>
+    </property>
+
+    <property>
+        <name>mapreduce.tasktracker.http.threads</name>
+        <value>80</value>
+        <description>HTTP服务器工作线程数</description>
+    </property>
+
+    <property>
+        <name>mapreduce.map.output.compress</name>
+        <value>true</value>
+        <description>开启写入压缩</description>
+    </property>
+
+    <property>
+        <name>mapreduce.map.output.compress.codec</name>
+        <value>org.apache.hadoop.io.compress.GzipCodec</value>
+        <description>使用GZip压缩方式</description>
+    </property>
+
+    <property>
+        <name>mapreduce.app-submission.cross-platform</name>
+        <value>true</value>
+        <description>意思是跨平台提交，在windows下如果没有这句代码会报错</description>
+    </property>
+
+</configuration>

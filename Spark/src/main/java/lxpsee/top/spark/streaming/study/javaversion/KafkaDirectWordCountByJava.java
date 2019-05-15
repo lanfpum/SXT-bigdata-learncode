@@ -21,33 +21,35 @@ import java.util.*;
 /**
  * The world always makes way for the dreamer
  * Created by 努力常态化 on 2019/5/14 16:12.
- * 基于Kafka Direct方式的实时wordcount程序
+ * 基于Kafka Direct方式的实时wordcount程序   可行
  */
 public class KafkaDirectWordCountByJava {
     public static void main(String[] args) throws InterruptedException {
-        SparkConf sparkConf = new SparkConf().setMaster("local[2]").setAppName("KafkaDirectWordCountByJava")
+        SparkConf sparkConf = new SparkConf().setMaster("local[2]")
+                .setAppName("KafkaDirectWordCountByJava")
                 .set("spark.testing.memory", "2147480000");
         JavaStreamingContext jsc = new JavaStreamingContext(sparkConf, Durations.seconds(10));
 
-        final String brokers = "192.168.217.202:9092,192.168.217.203:9092,192.168.217.204:9092";
+        final String brokers = "ip202:9092,ip203:9092,ip204:9092";
 
         Map<String, Object> kafkaParams = new HashMap<String, Object>();
         kafkaParams.put("bootstrap.servers", brokers);
         kafkaParams.put("key.deserializer", StringDeserializer.class);
         kafkaParams.put("value.deserializer", StringDeserializer.class);
-        kafkaParams.put("group.id", "g1");
+        kafkaParams.put("group.id", "g2");
         kafkaParams.put("auto.offset.reset", "latest");
         kafkaParams.put("enable.auto.commit", false);
 
         List<String> topics = Arrays.asList("wordcount");
 
-        JavaInputDStream<ConsumerRecord<String, String>> stream = KafkaUtils.createDirectStream(
-                jsc,
-                LocationStrategies.PreferConsistent(),
-                ConsumerStrategies.<String, String>Subscribe(topics, kafkaParams)
-        );
+        JavaInputDStream<ConsumerRecord<String, String>> lines =
+                KafkaUtils.createDirectStream(
+                        jsc,
+                        LocationStrategies.PreferConsistent(),
+                        ConsumerStrategies.<String, String>Subscribe(topics, kafkaParams)
+                );
 
-        JavaDStream<String> words = stream.flatMap(
+        JavaDStream<String> words = lines.flatMap(
                 new FlatMapFunction<ConsumerRecord<String, String>, String>() {
                     public Iterator<String> call(ConsumerRecord<String, String> c) throws Exception {
                         return Arrays.asList(c.value().split(" ")).iterator();

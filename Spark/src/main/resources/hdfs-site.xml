@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
+<configuration>
+    <property>
+        <name>dfs.replication</name>
+        <value>3</value>
+        <description>复本数量</description>
+    </property>
+
+    <property>
+        <name>dfs.blocksize</name>
+        <value>128m</value>
+        <description>HDFS 文件块大小</description>
+    </property>
+
+    <property>>
+        <name>dfs.namenode.name.dir</name>
+        <value>
+            file:///home/lanp/lanpBigData/hadoop/dfs/name1,
+            file:///home/lanp/lanpBigData/hadoop/dfs/name2
+        </value>
+    </property>
+
+    <property>
+        <name>dfs.datanode.data.dir</name>
+        <value>
+            file:///home/lanp/lanpBigData/hadoop/dfs/data1,
+            file:///home/lanp/lanpBigData/hadoop/dfs/data2
+        </value>
+    </property>
+
+    <property>
+        <name>dfs.namenode.secondary.http-address</name>
+        <value>ip205:50090</value>
+    </property>
+
+    <property>
+        <name>dfs.namenode.checkpoint.period</name>
+        <value>3600</value>
+        <description>SecondaryNameNode每隔一小时执行一次</description>
+    </property>
+
+    <property>
+        <name>dfs.namenode.checkpoint.txns</name>
+        <value>1000000</value>
+        <description>操作动作次数</description>
+    </property>
+
+    <property>
+        <name>dfs.namenode.checkpoint.check.period</name>
+        <value>60</value>
+        <description>1分钟检查一次操作次数</description>
+    </property>
+
+    <property>
+        <name>dfs.hosts</name>
+        <value>/soft/hadoop/etc/dfs.include.txt</value>
+        <description>服役节点</description>
+    </property>
+
+    <property>
+        <name>dfs.hosts.exclude</name>
+        <value>/soft/hadoop/etc/dfs.hosts.exclude.txt</value>
+        <description>退役节点</description>
+    </property>
+
+    <property>
+        <name>dfs.nameservices</name>
+        <value>lanpengcluster</value>
+    </property>
+
+    <property>
+        <name>dfs.ha.namenodes.lanpengcluster</name>
+        <value>namenode1,namenode2</value>
+        <description>lanpengcluster下的名称节点两个id，注意：当前只允许两个节点</description>
+    </property>
+
+    <property>
+        <name>dfs.namenode.rpc-address.lanpengcluster.namenode1</name>
+        <value>ip201:8020</value>
+        <description>配置namonode1的rpc地址</description>
+    </property>
+    <property>
+        <name>dfs.namenode.rpc-address.lanpengcluster.namenode2</name>
+        <value>ip206:8020</value>
+        <description>配置namonode2的rpc地址</description>
+    </property>
+
+    <property>
+        <name>dfs.namenode.http-address.lanpengcluster.namenode1</name>
+        <value>ip201:50070</value>
+        <description>配置webui端口</description>
+    </property>
+    <property>
+        <name>dfs.namenode.http-address.lanpengcluster.namenode2</name>
+        <value>ip206:50070</value>
+        <description>配置webui端口</description>
+    </property>
+
+    <property>
+        <name>dfs.namenode.shared.edits.dir</name>
+        <value>qjournal://ip202:8485;ip203:8485;ip204:8485/lanpengcluster</value>
+        <description>配置名称节点共享编辑目录</description>
+    </property>
+
+    <property>
+        <name>dfs.client.failover.proxy.provider.lanpengcluster</name>
+        <value>org.apache.hadoop.hdfs.server.namenode.ha.ConfiguredFailoverProxyProvider</value>
+        <description>java类，client使用它判断哪个节点是激活态</description>
+    </property>
+
+    <property>
+        <name>dfs.ha.fencing.methods</name>
+        <value>
+            sshfence
+            shell(/bin/true)
+        </value>
+        <description>脚本列表或者java类，在容灾保护激活态的nn</description>
+    </property>
+
+    <property>
+        <name>dfs.ha.fencing.ssh.private-value-files</name>
+        <value>/home/lanp/.ssh/id_rsa</value>
+    </property>
+
+    <property>
+        <name>dfs.journalnode.edits.dir</name>
+        <value>/home/lanp/lanpBigData/hadoop/journal</value>
+        <description>配置JN存放edit的本地路径</description>
+    </property>
+
+    <property>
+        <name>dfs.ha.automatic-failover.enabled</name>
+        <value>true</value>
+        <description>配置自动容灾</description>
+    </property>
+
+</configuration>
+

@@ -37,5 +37,10 @@ public class SparkSqlStudyConstants {
     public static final String WC_LOCAL_FILE_PATH = LOCAL_4_DISK_PATH + "hello.txt";
     public static final String WC_HDFS_FILE_PATH = HDFS_PREFIX + "hello.txt";
 
+    public static final String CHECK_POINT_HDFS_PATH = HDFS_PREFIX + "check-point/";
+
+
+
+
 
 }

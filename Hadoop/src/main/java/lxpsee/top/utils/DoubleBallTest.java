@@ -13,7 +13,8 @@ public class DoubleBallTest {
     public static void main(String[] args) {
         int zhu = 2;
 
-        int[] arrBei = {2, 3, 4, 5};
+//        int[] arrBei = {2, 3, 4, 5};
+        int[] arrBei = {5};
         int bei = arrBei[(int) (Math.random() * 5)];
         String beishu = "买 " + bei + " 倍！";
 

@@ -39,8 +39,8 @@ public class SparkSqlStudyConstants {
 
     public static final String CHECK_POINT_HDFS_PATH = HDFS_PREFIX + "check-point/";
 
-
-
+    public static final String NC_SERVER_IP = "47.104.132.209";
+    public static final Integer NC_SERVER_PORT = 9999;
 
 
 }

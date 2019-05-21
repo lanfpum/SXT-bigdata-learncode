@@ -1,5 +1,6 @@
 package lxpsee.top.spark.streaming.study.javaversion;
 
+import lxpsee.top.spark.sql.study.sqlConstant.SparkSqlStudyConstants;
 import org.apache.spark.SparkConf;
 import org.apache.spark.api.java.function.FlatMapFunction;
 import org.apache.spark.api.java.function.Function2;
@@ -43,7 +44,7 @@ public class WCStreamingByJava {
          * 数据流，JavaReceiverInputStream，代表了一个输入的DStream
          * socketTextStream()方法接收两个基本参数，第一个是监听哪个主机上的端口，第二个是监听哪个端口
          */
-        JavaReceiverInputDStream<String> lines = streamingContext.socketTextStream("localhost", 9999);
+        JavaReceiverInputDStream<String> lines = streamingContext.socketTextStream(SparkSqlStudyConstants.NC_SERVER_IP, 9999);
 
         /**
          * 到这里为止，你可以理解为JavaReceiverInputDStream中的，每隔一秒，会有一个RDD，其中封装了

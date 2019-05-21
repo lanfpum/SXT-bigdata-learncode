@@ -40,7 +40,7 @@ public class UpdateStateByKeyWordCountByJava {
          */
         jsc.checkpoint(SparkSqlStudyConstants.CHECK_POINT_HDFS_PATH);
 
-        JavaReceiverInputDStream<String> lines = jsc.socketTextStream("ip201", 9999);
+        JavaReceiverInputDStream<String> lines = jsc.socketTextStream(SparkSqlStudyConstants.NC_SERVER_IP, 9999);
         JavaDStream<String> words = lines.flatMap(
                 new FlatMapFunction<String, String>() {
                     public Iterator<String> call(String s) throws Exception {
